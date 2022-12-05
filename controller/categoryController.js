@@ -14,7 +14,7 @@ module.exports = {
     } catch (error) {
       res.send({
         success: false,
-        message: err,
+        message: error,
         data: null,
       });
     }
