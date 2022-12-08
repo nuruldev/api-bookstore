@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { images } = require("../models");
+const { images, sequelize } = require("../models");
 const db = require("../models");
 const book = db.books;
 const image = db.images;
@@ -76,6 +76,7 @@ module.exports = {
     }
   },
   create: async (req, res) => {
+    const t = await sequelize.transaction()
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -91,9 +92,11 @@ module.exports = {
         thick,
         status,
         categoryId,
+        desc
       } = req.body;
 
       const file = req.file;
+      // console.log(file)
 
       const data = await book.create({
         name: name,
@@ -104,13 +107,20 @@ module.exports = {
         thick: thick,
         status: status,
         category_id: categoryId,
+        desc: desc
+      }, {
+        transaction: t
       });
 
       await image.create({
         book_id: data.id,
         name: file.filename,
         mime: file.mimetype,
+      }, {
+        transaction: t
       });
+
+      await t.commit()
 
       return res.send({
         success: true,
@@ -118,6 +128,9 @@ module.exports = {
         data: data,
       });
     } catch (error) {
+
+      await t.rollback()
+      console.log(error)
       return res.status(500).send({
         success: false,
         message: "filed to create book",

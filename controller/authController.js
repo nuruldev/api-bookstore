@@ -57,7 +57,7 @@ module.exports = {
         name: name,
         email: email,
         password: hashSync(password, 10),
-        roleId: 1,
+        roleId: 2,
       });
       res.send({
         success: true,
