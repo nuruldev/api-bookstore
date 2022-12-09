@@ -16,6 +16,10 @@ module.exports = {
           min: 3
         }
       },
+      slug: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -98,6 +98,8 @@ module.exports = {
       const file = req.file;
       // console.log(file)
 
+      const slug = name.toString().toLowerCase().replace(/^-+/, '').replace(/-+$/, '').replace(/\s+/g, '-').replace(/\-\-+/g, '-').replace(/[^\w\-]+/g, '');
+
       const data = await book.create({
         name: name,
         author: author,
@@ -107,7 +109,8 @@ module.exports = {
         thick: thick,
         status: status,
         category_id: categoryId,
-        desc: desc
+        desc: desc,
+        slug: slug
       }, {
         transaction: t
       });

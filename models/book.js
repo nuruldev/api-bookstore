@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       thick: DataTypes.NUMBER,
       status: DataTypes.STRING,
       category_id: DataTypes.NUMBER,
-      desc: DataTypes.TEXT
+      desc: DataTypes.TEXT,
+      slug: DataTypes.STRING
     },
     {
       sequelize,

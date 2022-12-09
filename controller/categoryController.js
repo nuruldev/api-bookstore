@@ -51,8 +51,10 @@ module.exports = {
         return;
       }
       const { name } = req.body;
+      const slug = name.toString().toLowerCase().replace(/^-+/, '').replace(/-+$/, '').replace(/\s+/g, '-').replace(/\-\-+/g, '-').replace(/[^\w\-]+/g, '');
       const data = await category.create({
         name: name,
+        slug: slug
       });
       res.send({
         success: true,
