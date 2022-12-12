@@ -5,7 +5,9 @@ const category = db.categories;
 module.exports = {
   findAll: async (req, res) => {
     try {
-      const data = await category.findAll();
+      const data = await category.findAll({attributes: [
+        'id', 'name'
+      ]});
       res.send({
         success: true,
         message: "List of categories",
@@ -21,7 +23,9 @@ module.exports = {
   },
   findById: async (req, res) => {
     try {
-      const data = await category.findByPk(req.params.id);
+      const data = await category.findByPk(req.params.id, {attributes: [
+        'id', 'name'
+      ]});
       if (data === null) {
         res.send({
           success: false,

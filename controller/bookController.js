@@ -18,9 +18,12 @@ module.exports = {
           "stock",
           "thick",
           "status",
-          "desc"
+          "desc",
         ],
-        include: [{ model: image, attributes: ["name"] }, { model: category, attributes: ["name"] }],
+        include: [
+          { model: image, attributes: ["id", "name"] },
+          { model: category, attributes: ["id", "name"] },
+        ],
       });
       console.log(data);
       return res.send({
@@ -49,11 +52,11 @@ module.exports = {
           "stock",
           "thick",
           "status",
-          "desc"
+          "desc",
         ],
         include: [
-          { model: image, attributes: ["name"] },
-          { model: category, attributes: ["name"] },
+          { model: image, attributes: ["id", "name"] },
+          { model: category, attributes: ["id", "name"] },
         ],
       });
       if (data === null) {
@@ -78,7 +81,7 @@ module.exports = {
     }
   },
   create: async (req, res) => {
-    const t = await sequelize.transaction()
+    const t = await sequelize.transaction();
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -94,38 +97,51 @@ module.exports = {
         thick,
         status,
         categoryId,
-        desc
+        desc,
       } = req.body;
 
       const file = req.file;
       // console.log(file)
 
-      const slug = name.toString().toLowerCase().replace(/^-+/, '').replace(/-+$/, '').replace(/\s+/g, '-').replace(/\-\-+/g, '-').replace(/[^\w\-]+/g, '');
+      const slug = name
+        .toString()
+        .toLowerCase()
+        .replace(/^-+/, "")
+        .replace(/-+$/, "")
+        .replace(/\s+/g, "-")
+        .replace(/\-\-+/g, "-")
+        .replace(/[^\w\-]+/g, "");
 
-      const data = await book.create({
-        name: name,
-        author: author,
-        publisher: publisher,
-        price: price,
-        stock: stock,
-        thick: thick,
-        status: status,
-        category_id: categoryId,
-        desc: desc,
-        slug: slug
-      }, {
-        transaction: t
-      });
+      const data = await book.create(
+        {
+          name: name,
+          author: author,
+          publisher: publisher,
+          price: price,
+          stock: stock,
+          thick: thick,
+          status: status,
+          category_id: categoryId,
+          desc: desc,
+          slug: slug,
+        },
+        {
+          transaction: t,
+        }
+      );
 
-      await image.create({
-        book_id: data.id,
-        name: file.filename,
-        mime: file.mimetype,
-      }, {
-        transaction: t
-      });
+      await image.create(
+        {
+          book_id: data.id,
+          name: file.filename,
+          mime: file.mimetype,
+        },
+        {
+          transaction: t,
+        }
+      );
 
-      await t.commit()
+      await t.commit();
 
       return res.send({
         success: true,
@@ -133,9 +149,8 @@ module.exports = {
         data: data,
       });
     } catch (error) {
-
-      await t.rollback()
-      console.log(error)
+      await t.rollback();
+      console.log(error);
       return res.status(500).send({
         success: false,
         message: "filed to create book",
@@ -195,12 +210,8 @@ module.exports = {
     try {
       const id = req.params.id;
       const data = await book.findByPk(id, {
-        attributes: [
-          "id"
-        ],
-        include: [
-          { model: image, attributes: ["name"] }
-        ],
+        attributes: ["id"],
+        include: [{ model: image, attributes: ["name"] }],
       });
       if (data === null) {
         res.send({
@@ -213,7 +224,7 @@ module.exports = {
           where: { id: req.params.id },
         });
         // let path = `public/images/${data}`;
-        console.log(data)
+        console.log(data);
 
         res.send({
           success: true,
