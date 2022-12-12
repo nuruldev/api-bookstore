@@ -18,6 +18,7 @@ module.exports = {
           "stock",
           "thick",
           "status",
+          "desc"
         ],
         include: [{ model: image, attributes: ["name"] }, { model: category, attributes: ["name"] }],
       });
@@ -48,6 +49,7 @@ module.exports = {
           "stock",
           "thick",
           "status",
+          "desc"
         ],
         include: [
           { model: image, attributes: ["name"] },

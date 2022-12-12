@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const passport = require("passport")
+const isLogin = passport.authenticate("jwt", {session: false})
+const indexController = require("../controller/indexController")
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get('/token', isLogin,  indexController.getToken);
 
 module.exports = router;

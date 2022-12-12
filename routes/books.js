@@ -10,7 +10,7 @@ router.use(upload.single("foto"))
 
 /* GET users listing. */
 router.get("/", bookController.findAll);
-router.get("/:id", bookController.findById);
+router.get("/:id", isLogin, bookController.findById);
 router.post("/create", isLogin, bookCheck(), bookController.create);
 router.put("/update/:id", isLogin, bookCheck(), bookController.update);
 router.delete("/delete/:id", isLogin, bookCheck(), bookController.delete);

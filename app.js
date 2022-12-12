@@ -24,7 +24,7 @@ app.use(passport.initialize())
 
 require("./middleware/auth")
 
-app.use('/', indexRouter);
+app.use('/api/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/profiles', profilesRouter);
 app.use('/api/categories', categoriesRouter);

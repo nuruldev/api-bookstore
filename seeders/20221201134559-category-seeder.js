@@ -14,6 +14,7 @@ module.exports = {
     */
      await queryInterface.bulkInsert('Categories', [{
       name: 'sastra',
+      slug: 'sastra',
       createdAt: new Date(),
       updatedAt: new Date()
     }])
