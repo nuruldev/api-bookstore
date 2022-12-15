@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const db = require("../models");
 const profile = db.profiles;
+const user = db.users
 const { getUserAuth } = require("../utils/helper");
 
 module.exports = {
@@ -13,6 +14,7 @@ module.exports = {
           message: "Unauthorize",
         });
       } else {
+        const user = await 
         res.send({
           success: true,
           message: "detail of user",

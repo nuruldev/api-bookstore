@@ -1,13 +1,13 @@
 const { hashSync, compareSync } = require("bcrypt");
 const { validationResult } = require("express-validator");
 const db = require("../models");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 const user = db.users;
 
 module.exports = {
   login: async (req, res) => {
     try {
-      const {email, password} = req.body
+      const { email, password } = req.body;
       const data = await user.findOne({ where: { email: email } });
       if (data === null) {
         return res.send({
@@ -17,20 +17,23 @@ module.exports = {
         });
       }
 
-      const match = compareSync(password, data.password)
+      const match = compareSync(password, data.password);
       if (!match) {
         return res.send({
           success: false,
-          message: "invalid email or password"
+          message: "invalid email or password",
         });
       }
 
       const payload = {
         name: data.name,
-        email: data.email
-      }
+        email: data.email,
+        roleId: data.roleId,
+      };
 
-      const token = jwt.sign(payload, process.env.SECRET_KEY, {expiresIn: "1d"})
+      const token = jwt.sign(payload, process.env.SECRET_KEY, {
+        expiresIn: "1d",
+      });
 
       return res.send({
         success: true,

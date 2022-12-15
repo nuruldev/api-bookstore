@@ -51,9 +51,18 @@ db.images = require("./image")(sequelize, Sequelize);
 db.profiles = require("./profile")(sequelize, Sequelize);
 
 db.books.hasMany(db.images, { foreignKey: "book_id" });
-db.images.belongsTo(db.books, { foreignKey: "book_id" });
-db.books.belongsTo(db.categories, { foreignKey: "category_id" });
+db.images.belongsTo(db.books, { foreignKey: {
+  allowNull: false,
+  name: "book_id"
+}, onDelete: "CASCADE", onUpdate: "CASCADE" });
+db.books.belongsTo(db.categories, { foreignKey: {
+  name: "category_id",
+  allowNull: false
+}, onDelete: "CASCADE", hooks: true });
 db.users.hasOne(db.profiles, { foreignKey: "user_id" });
-db.profiles.belongsTo(db.users, { foreignKey: "user_id" });
+db.profiles.belongsTo(db.users, { foreignKey: {
+  allowNull: false,
+  name: "user_id"
+}, onDelete: "CASCADE", onUpdate: "CASCADE", hooks: true });
 
 module.exports = db;

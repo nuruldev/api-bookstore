@@ -25,7 +25,23 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true
       },
-      birthplace: {
+      province: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      regency: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      village: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      pos_code: {
         type: Sequelize.STRING,
         allowNull: true
       },

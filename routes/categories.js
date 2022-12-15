@@ -5,7 +5,7 @@ const categoryController = require("../controller/categoryController");
 const { categoryCheck } = require("../utils/validation");
 const isLogin = passport.authenticate("jwt", { session: false });
 
-/* GET users listing. */
+/* GET categories listing. */
 router.get("/", categoryController.findAll);
 router.get("/:id", categoryController.findById);
 router.post("/create", isLogin, categoryCheck(), categoryController.create);
