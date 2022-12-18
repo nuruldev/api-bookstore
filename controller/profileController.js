@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const db = require("../models");
 const profile = db.profiles;
-const user = db.users
+const user = db.users;
 const { getUserAuth } = require("../utils/helper");
 
 module.exports = {
@@ -14,11 +14,32 @@ module.exports = {
           message: "Unauthorize",
         });
       } else {
-        const user = await 
+        const currentUser = await profile.findOne({
+          where: {
+            email: data.email,
+          },
+          attributes: [
+            "user_id",
+            "gender",
+            "birthdate",
+            "province",
+            "regency",
+            "district",
+            "village",
+            "pos_code",
+            "phone",
+            "address",
+            "picture",
+          ],
+          include: {
+            model: user,
+            attributes: ["name", "email"],
+          },
+        });
         res.send({
           success: true,
           message: "detail of user",
-          data: data,
+          data: currentUser,
         });
       }
     } catch (error) {
@@ -39,33 +60,49 @@ module.exports = {
 
       const user = await getUserAuth(req, res);
       const data = await profile.findOne({ where: { user_id: user.id } });
-      const { gender, birthdate, birthplace, phone, address } = req.body;
+      const {
+        gender,
+        birthdate,
+        province,
+        regency,
+        district,
+        village,
+        pos_code,
+        phone,
+        address,
+      } = req.body;
       const file = req.file;
       let filename = data.picture;
       if (file !== undefined) {
         filename = file.filename;
       }
 
-      let result
+      let result;
       if (data == null) {
-        result = await profile.create(
+        result = await profile.create({
+          user_id: user.id,
+          gender: gender,
+          birthdate: birthdate,
+          province: province,
+          regency: regency,
+          district: district,
+          village: village,
+          pos_code: pos_code,
+          phone: phone,
+          address: address,
+          picture: filename,
+        });
+      } else {
+        result = await profile.update(
           {
             user_id: user.id,
             gender: gender,
             birthdate: birthdate,
-            birthplace: birthplace,
-            phone: phone,
-            address: address,
-            picture: filename,
-          }
-        );
-      } else {
-
-        result = await profile.update(
-          {
-            gender: gender,
-            birthdate: birthdate,
-            birthplace: birthplace,
+            province: province,
+            regency: regency,
+            district: district,
+            village: village,
+            pos_code: pos_code,
             phone: phone,
             address: address,
             picture: filename,

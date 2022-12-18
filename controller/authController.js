@@ -26,6 +26,7 @@ module.exports = {
       }
 
       const payload = {
+        id: data.id,
         name: data.name,
         email: data.email,
         roleId: data.roleId,
