@@ -7,10 +7,10 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "username": "njayy96",
+    "password": "v2_3x53F_msNFYszcwSEPjkrVWDsQJjZ",
+    "database": "njayy96/trial",
+    "host": "db.bit.io",
     "dialect": "postgres"
   },
   "production": {
