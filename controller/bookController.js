@@ -153,7 +153,7 @@ module.exports = {
       console.log(error);
       return res.status(500).send({
         success: false,
-        message: "filed to create book",
+        message: "failed to create book",
         errors: error,
       });
     }
